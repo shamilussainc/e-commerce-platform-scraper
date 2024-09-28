@@ -1,0 +1,33 @@
+
+services:
+  server:
+    build: ./server/
+    ports:
+      - 8000:80
+    depends_on:
+      - rabbitmq
+      - worker
+    container_name: 'server_app'
+    env_file:
+      - .env
+
+  worker:
+    build: ./worker/
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+    deploy:
+          replicas: 3
+
+  rabbitmq:
+    image: rabbitmq:3.9.13-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq_data:
