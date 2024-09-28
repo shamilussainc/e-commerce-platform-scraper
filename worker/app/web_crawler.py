@@ -15,14 +15,14 @@ class ProductsSpider(scrapy.Spider):
             product_link = response.urljoin(link)
             yield response.follow(product_link, self.parse_product)
 
-        # Get the current page number from the URL
-        current_page = int(response.url.split('currentPage=')[-1])
-        next_page = current_page + 1
-        # Construct the next page URL
-        next_page_url = response.urljoin(f"{os.getenv('SCRAPY_START_URL')}?currentPage={next_page}")
-        # limiting number of pages for scrapping.
-        if next_page <= 10:
-            yield scrapy.Request(next_page_url, callback=self.parse)
+        # # Get the current page number from the URL
+        # current_page = int(response.url.split('currentPage=')[-1])
+        # next_page = current_page + 1
+        # # Construct the next page URL
+        # next_page_url = response.urljoin(f"{os.getenv('SCRAPY_START_URL')}?currentPage={next_page}")
+        # # limiting number of pages for scrapping.
+        # if next_page <= 10:
+        #     yield scrapy.Request(next_page_url, callback=self.parse)
 
 
     def parse_product(self, response):
